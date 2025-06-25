@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANNAMALAIYAR FINANCE ૐ 𓉸𓆘</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+            webkit-text-size-adjust: 100%;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px; /* Larger font for mobile */
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 15px; /* Larger padding for mobile */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            -webkit-appearance: none; /* Remove iOS styling */
+        }
+        button.delete-btn {
+            background: #e74c3c;
+        }
+        button.print-btn {
+            background: #2ecc71;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .total-summary {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .message {
+            font-size: 14px;
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: auto;
+            width: 90%;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        .balance {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .customer-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3498db;
+        }
+        .customer-image-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3498db;
+            margin: 10px 0;
+            display: none;
+        }
+        .signature-preview {
+            width: 150px;
+            height: 50px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 8px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 3px;
+            }
+            button {
+                padding: 10px 12px; /* Slightly larger for mobile */
+                font-size: 14px;
+                margin-right: 5px;
+                width: 100%; /* Full width buttons on mobile */
+                margin-bottom: 5px;
+            }
+            .customer-image {
+                width: 40px;
+                height: 40px;
+            }
+            input, select {
+                padding: 8px;
+                font-size: 14px; /* Slightly larger font for mobile */
+            }
+            .form-group {
+                margin-bottom: 12px;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background: white;
+                margin: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            th {
+                background-color: #3498db !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            .page-number:after {
+                content: counter(page);
+            }
+            .print-footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                font-size: 10px;
+                padding: 10px;
+            }
+            .print-image {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #3498db;
+            }
+            .print-signature {
+                width: 150px;
+                height: 60px;
+                margin-top: 10px;
+                border: 1px solid #000;
+            }
+            .signature-line {
+                border-top: 1px solid #000;
+                width: 150px;
+                margin-top: 40px;
+            }
+            .signature-container {
+                margin-top: 40px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .signature-box {
+                text-align: center;
+                width: 45%;
+            }
+            .signature-title {
+                margin-top: 5px;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ANNAMALAIYAR FINANCE ૐ 𓉸𓆘</h1>
+        
+        <div class="section">
+            <h2>புதிய வாடிக்கையாளர் சேர்க்க</h2>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label for="customerName">வாடிக்கையாளர் பெயர்</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">தொலைபேசி எண்</label>
+                    <input type="text" id="phoneNumber" pattern="[0-9]{10}" title="10 digit phone number" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label for="aadharNumber">ஆதார் எண்</label>
+                    <input type="text" id="aadharNumber" pattern="[0-9]{12}" title="12 digit Aadhar number" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label for="principalAmount">அசல் தொகை (₹)</label>
+                    <input type="number" id="principalAmount" required min="1" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label for="interestRate">வட்டி விகிதம் (%)</label>
+                    <input type="number" id="interestRate" value="3" required min="0" max="100" step="0.01" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">தொடக்க தேதி</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerImage">வாடிக்கையாளர் படம்</label>
+                    <input type="file" id="customerImage" accept="image/*" capture="camera">
+                    <img id="customerImagePreview" class="customer-image-preview" alt="Customer Image Preview">
+                </div>
+                <div class="form-group">
+                    <label for="customerSignature">வாடிக்கையாளர் கையொப்பம்</label>
+                    <input type="file" id="customerSignature" accept="image/*" capture="camera">
+                    <img id="customerSignaturePreview" class="signature-preview" alt="Customer Signature Preview">
+                </div>
+                <div class="form-group">
+                    <label for="ownerSignature">உரிமையாளர் கையொப்பம்</label>
+                    <input type="file" id="ownerSignature" accept="image/*" capture="camera">
+                    <img id="ownerSignaturePreview" class="signature-preview" alt="Owner Signature Preview">
+                </div>
+                <button type="submit" id="addCustomerBtn">வாடிக்கையாளரை சேர்க்க</button>
+                <div id="formMessage" class="message" style="display:none;"></div>
+            </form>
+        </div>
+        
+        <!-- Rest of your HTML remains the same -->
+        <div class="section">
+            <h2>வட்டி பணம் பெறுதல்</h2>
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="customerSelect">வாடிக்கையாளரை தேர்ந்தெடுக்கவும்</label>
+                    <select id="customerSelect" required>
+                        <option value="">-- வாடிக்கையாளரை தேர்ந்தெடுக்கவும் --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">பணம் பெறும் தேதி</label>
+                    <input type="date" id="paymentDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="dueAmount">வட்டி தொகை (₹)</label>
+                    <input type="number" id="dueAmount" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paidAmount">பெறப்பட்ட தொகை (₹)</label>
+                    <input type="number" id="paidAmount" required min="1" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label for="balanceAmount">மீதி தொகை (₹)</label>
+                    <input type="number" id="balanceAmount" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paymentNotes">குறிப்புகள்</label>
+                    <input type="text" id="paymentNotes">
+                </div>
+                <button type="submit" id="addPaymentBtn">பணத்தை பதிவு செய்க</button>
+                <div id="paymentMessage" class="message" style="display:none;"></div>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>வாடிக்கையாளர் பதிவுகள்</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="வாடிக்கையாளர் பெயர், தொலைபேசி அல்லது ஆதார் எண் மூலம் தேடு..." style="width: 100%; max-width: 300px; padding: 10px;">
+                <button onclick="searchCustomers()">தேடு</button>
+                <button onclick="resetSearch()">மீட்டமை</button>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>படம்</th>
+                            <th>வாடிக்கையாளர் பெயர்</th>
+                            <th>தொலைபேசி</th>
+                            <th>ஆதார் எண்</th>
+                            <th>அசல்</th>
+                            <th>வட்டி விகிதம்</th>
+                            <th>மாதாந்திர வட்டி</th>
+                            <th>தொடக்கம்</th>
+                            <th>மொத்தம் செலுத்தியது</th>
+                            <th>மீதி தொகை</th>
+                            <th>கடைசி பணம்</th>
+                            <th>செயல்கள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="total-summary">
+                <h3>வணிக சுருக்கம்</h3>
+                <p>மொத்த வாடிக்கையாளர்கள்: <span id="totalCustomers">0</span></p>
+                <p>மொத்த அசல் தொகை: ₹<span id="totalPrincipal">0</span></p>
+                <p>மொத்த வட்டி தொகை: ₹<span id="totalInterest">0</span></p>
+                <p>மொத்த மீதி தொகை: ₹<span id="totalBalance">0</span></p>
+            </div>
+        </div>
+        
+        <div id="paymentHistoryModal" class="modal">
+            <div class="modal-content">
+                <h2 id="modalCustomerName">பணம் செலுத்திய விவரம்</h2>
+                <div id="modalCustomerImageContainer" style="text-align: center; margin-bottom: 15px;"></div>
+                <table id="paymentHistoryTable" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>தேதி</th>
+                            <th>வட்டி தொகை</th>
+                            <th>பெறப்பட்டது</th>
+                            <th>மீதி</th>
+                            <th>குறிப்புகள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentHistoryBody">
+                    </tbody>
+                </table>
+                <button onclick="closeModal()" style="margin-top: 20px;">மூடு</button>
+            </div>
+        </div>
+        
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h2>வாடிக்கையாளரை நீக்குகிறீர்களா?</h2>
+                <p id="deleteCustomerText">இந்த வாடிக்கையாளரை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?</p>
+                <div style="margin-top: 20px;">
+                    <button onclick="confirmDelete()" class="delete-btn">ஆம், நீக்கு</button>
+                    <button onclick="cancelDelete()">இல்லை, ரத்துசெய்</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hidden print section -->
+        <div id="printSection" style="display: none;"></div>
+    </div>
+
+    <script>
+        let customers = JSON.parse(localStorage.getItem('interestBusinessCustomers')) || [];
+        let payments = JSON.parse(localStorage.getItem('interestBusinessPayments')) || [];
+        let customerToDelete = null;
+        
+        const customerForm = document.getElementById('customerForm');
+        const paymentForm = document.getElementById('paymentForm');
+        const customerSelect = document.getElementById('customerSelect');
+        const customerTableBody = document.getElementById('customerTableBody');
+        const dueAmountInput = document.getElementById('dueAmount');
+        const paidAmountInput = document.getElementById('paidAmount');
+        const balanceAmountInput = document.getElementById('balanceAmount');
+        const printSection = document.getElementById('printSection');
+        const customerImageInput = document.getElementById('customerImage');
+        const customerImagePreview = document.getElementById('customerImagePreview');
+        const customerSignatureInput = document.getElementById('customerSignature');
+        const customerSignaturePreview = document.getElementById('customerSignaturePreview');
+        const ownerSignatureInput = document.getElementById('ownerSignature');
+        const ownerSignaturePreview = document.getElementById('ownerSignaturePreview');
+        const addCustomerBtn = document.getElementById('addCustomerBtn');
+        
+        // Image preview functionality
+        customerImageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customerImagePreview.src = e.target.result;
+                    customerImagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Customer signature preview functionality
+        customerSignatureInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customerSignaturePreview.src = e.target.result;
+                    customerSignaturePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Owner signature preview and permanent storage
+        ownerSignatureInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    ownerSignaturePreview.src = e.target.result;
+                    ownerSignaturePreview.style.display = 'block';
+                    localStorage.setItem('ownerSignaturePermanent', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load permanent owner signature if exists
+            const permanentOwnerSignature = localStorage.getItem('ownerSignaturePermanent');
+            if (permanentOwnerSignature) {
+                ownerSignaturePreview.src = permanentOwnerSignature;
+                ownerSignaturePreview.style.display = 'block';
+            }
+            
+            renderCustomerSelect();
+            renderCustomerTable();
+            updateSummary();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            document.getElementById('paymentDate').value = today;
+            
+            customerSelect.addEventListener('change', function() {
+                const customerId = this.value;
+                if (customerId) {
+                    const customer = customers.find(c => c.id === customerId);
+                    if (customer) {
+                        const interestAmount = calculateMonthlyInterest(customer);
+                        dueAmountInput.value = interestAmount.toFixed(2);
+                        paidAmountInput.value = '';
+                        balanceAmountInput.value = interestAmount.toFixed(2);
+                    }
+                }
+            });
+            
+            paidAmountInput.addEventListener('input', function() {
+                const dueAmount = parseFloat(dueAmountInput.value) || 0;
+                const paidAmount = parseFloat(this.value) || 0;
+                const balance = dueAmount - paidAmount;
+                balanceAmountInput.value = balance.toFixed(2);
+            });
+        });
+        
+        // Improved form submission handling for mobile
+        addCustomerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleCustomerFormSubmit();
+        });
+        
+        function handleCustomerFormSubmit() {
+            const permanentOwnerSignature = localStorage.getItem('ownerSignaturePermanent');
+            
+            const customerName = document.getElementById('customerName').value;
+            if (!customerName) {
+                showMessage('formMessage', 'வாடிக்கையாளர் பெயர் தேவை!', 'error');
+                return;
+            }
+            
+            const principalAmount = parseFloat(document.getElementById('principalAmount').value);
+            if (!principalAmount || principalAmount <= 0) {
+                showMessage('formMessage', 'சரியான அசல் தொகையை உள்ளிடவும்!', 'error');
+                return;
+            }
+            
+            const customer = {
+                id: Date.now().toString(),
+                name: customerName,
+                phone: document.getElementById('phoneNumber').value,
+                aadhar: document.getElementById('aadharNumber').value,
+                principal: principalAmount,
+                rate: parseFloat(document.getElementById('interestRate').value),
+                startDate: document.getElementById('startDate').value,
+                image: customerImagePreview.src || '',
+                signature_customer: customerSignaturePreview.src || '',
+                signature: permanentOwnerSignature || ownerSignaturePreview.src || ''
+            };
+            
+            customers.push(customer);
+            saveData();
+            
+            customerForm.reset();
+            customerImagePreview.src = '';
+            customerImagePreview.style.display = 'none';
+            customerSignaturePreview.src = '';
+            customerSignaturePreview.style.display = 'none';
+            document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('interestRate').value = '3';
+            
+            showMessage('formMessage', 'வாடிக்கையாளர் வெற்றிகரமாக சேர்க்கப்பட்டார்!', 'success');
+            
+            renderCustomerSelect();
+            renderCustomerTable();
+            updateSummary();
+        }
+        
+        function calculateMonthlyInterest(customer) {
+            return customer.principal * (customer.rate / 100);
+        }
+        
+        paymentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const customerId = customerSelect.value;
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+            
+            const payment = {
+                id: Date.now().toString(),
+                customerId: customerId,
+                date: document.getElementById('paymentDate').value,
+                dueAmount: parseFloat(dueAmountInput.value),
+                paidAmount: parseFloat(paidAmountInput.value),
+                balance: parseFloat(balanceAmountInput.value),
+                notes: document.getElementById('paymentNotes').value
+            };
+            
+            payments.push(payment);
+            saveData();
+            
+            // Send SMS to customer if phone exists
+            if (customer.phone && customer.phone.length === 10) {
+                sendSMSNotification(customer.phone, customer.name, payment.paidAmount, payment.balance);
+            }
+            
+            paymentForm.reset();
+            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+            dueAmountInput.value = '';
+            paidAmountInput.value = '';
+            balanceAmountInput.value = '';
+            
+            showMessage('paymentMessage', 'வட்டி பணம் வெற்றிகரமாக பதிவு செய்யப்பட்டது!', 'success');
+            
+            renderCustomerTable();
+            updateSummary();
+        });
+        
+        function sendSMSNotification(phoneNumber, customerName, paidAmount, balance) {
+            const message = `ANNAMALAIYAR FINANCE: வணக்கம் ${customerName}, உங்கள் ₹${paidAmount.toFixed(2)} வட்டித் தொகை பெறப்பட்டது. மீதி: ₹${balance.toFixed(2)}. நன்றி!`;
+            console.log(`SMS sent to customer ${phoneNumber}: ${message}`);
+            // In a real implementation, you would call an SMS API here
+        }
+        
+        function preparePrintContent(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) return;
+            
+            const customerPayments = payments.filter(p => p.customerId === customerId)
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            const totalPaid = customerPayments.reduce((sum, p) => sum + p.paidAmount, 0);
+            const totalBalance = customerPayments.reduce((sum, p) => sum + p.balance, 0);
+            const monthlyInterest = calculateMonthlyInterest(customer);
+            
+            const formattedAadhar = customer.aadhar 
+                ? `${customer.aadhar.substring(0, 4)}-${customer.aadhar.substring(4, 8)}-${customer.aadhar.substring(8, 12)}` 
+                : '-';
+            
+            let printHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h1 style="margin-bottom: 5px;">ANNAMALAIYAR FINANCE</h1>
+                    <p style="font-size: 12px; margin-top: 5px;">உருவாக்கப்பட்ட தேதி: ${formatDate(new Date())}</p>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    ${customer.image ? `<img src="${customer.image}" class="print-image" alt="Customer Image">` : ''}
+                </div>
+                
+                <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">வாடிக்கையாளர் விவரங்கள்</h2>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd; width: 30%;">பெயர்</td>
+                        <td style="padding: 5px; border: 1px solid #ddd; width: 70%;">${customer.name}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">தொலைபேசி</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${customer.phone || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">ஆதார்</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${formattedAadhar}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">அசல் தொகை</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">₹${customer.principal.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">வட்டி விகிதம்</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${customer.rate}%</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">மாதாந்திர வட்டி தொகை</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">₹${monthlyInterest.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">தொடக்க தேதி</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${formatDate(new Date(customer.startDate))}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">மொத்தம் செலுத்தியது</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">₹${totalPaid.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">மொத்தம் மீதி</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">₹${totalBalance.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">கடைசி பணம் செலுத்திய தேதி</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${customerPayments.length > 0 ? formatDate(new Date(customerPayments[customerPayments.length - 1].date)) : 'இல்லை'}</td>
+                    </tr>
+                </table>
+            `;
+            
+            if (customerPayments.length > 0) {
+                printHTML += `
+                    <h2 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 20px;">பணம் செலுத்திய வரலாறு</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr>
+                                <th style="background-color: #3498db; color: white; padding: 8px; border: 1px solid #ddd;">தேதி</th>
+                                <th style="background-color: #3498db; color: white; padding: 8px; border: 1px solid #ddd;">வட்டி தொகை</th>
+                                <th style="background-color: #3498db; color: white; padding: 8px; border: 1px solid #ddd;">பெறப்பட்டது</th>
+                                <th style="background-color: #3498db; color: white; padding: 8px; border: 1px solid #ddd;">மீதி</th>
+                                <th style="background-color: #3498db; color: white; padding: 8px; border: 1px solid #ddd;">குறிப்புகள்</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                customerPayments.forEach(payment => {
+                    printHTML += `
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${formatDate(new Date(payment.date))}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">₹${payment.dueAmount.toFixed(2)}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">₹${payment.paidAmount.toFixed(2)}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">₹${payment.balance.toFixed(2)}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${payment.notes || '-'}</td>
+                        </tr>
+                    `;
+                });
+                
+                printHTML += `
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            // Add signature section with both customer and owner signatures
+            printHTML += `
+                <div class="signature-container">
+                    <div class="signature-box">
+                        ${customer.signature_customer ? `<img src="${customer.signature_customer}" class="print-signature" alt="Customer Signature">` : '<div class="signature-line"></div>'}
+                        <p class="signature-title">வாடிக்கையாளர் கையொப்பம்</p>
+                    </div>
+                    <div class="signature-box">
+                        ${customer.signature ? `<img src="${customer.signature}" class="print-signature" alt="Owner Signature">` : '<div class="signature-line"></div>'}
+                        <p class="signature-title">உரிமையாளர் கையொப்பம்</p>
+                    </div>
+                </div>
+                
+                <div class="print-footer">
+                    <p>ANNAMALAIYAR FINANCE</p>
+                    <p>பக்கம்: <span class="page-number"></span></p>
+                </div>
+            `;
+            
+            return printHTML;
+        }
+        
+        function formatDate(date) {
+            if (!date || isNaN(new Date(date).getTime())) return '';
+            const options = { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit'
+            };
+            return new Date(date).toLocaleDateString('en-IN', options);
+        }
+        
+        function printCustomerDetails(customerId) {
+            const printContent = preparePrintContent(customerId);
+            if (!printContent) return;
+            
+            printSection.innerHTML = printContent;
+            printSection.style.display = 'block';
+            
+            window.print();
+            
+            setTimeout(() => {
+                printSection.style.display = 'none';
+                printSection.innerHTML = '';
+            }, 500);
+        }
+        
+        function renderCustomerSelect() {
+            customerSelect.innerHTML = '<option value="">-- வாடிக்கையாளரை தேர்ந்தெடுக்கவும் --</option>';
+            customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = `${customer.name} (₹${customer.principal.toFixed(2)})`;
+                customerSelect.appendChild(option);
+            });
+        }
+        
+        function renderCustomerTable(filteredCustomers = null) {
+            const displayCustomers = filteredCustomers || customers;
+            customerTableBody.innerHTML = '';
+            
+            displayCustomers.forEach(customer => {
+                const customerPayments = payments.filter(p => p.customerId === customer.id);
+                const totalPaid = customerPayments.reduce((sum, p) => sum + p.paidAmount, 0);
+                const totalBalance = customerPayments.reduce((sum, p) => sum + p.balance, 0);
+                const lastPayment = customerPayments.length > 0 
+                    ? formatDate(new Date(customerPayments[customerPayments.length - 1].date))
+                    : 'இல்லை';
+                const monthlyInterest = calculateMonthlyInterest(customer);
+                
+                const formattedAadhar = customer.aadhar 
+                    ? `${customer.aadhar.substring(0, 4)}-${customer.aadhar.substring(4, 8)}-${customer.aadhar.substring(8, 12)}` 
+                    : '-';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${customer.image ? `<img src="${customer.image}" class="customer-image" alt="${customer.name}">` : '-'}</td>
+                    <td class="nowrap">${customer.name}</td>
+                    <td class="nowrap">${customer.phone || '-'}</td>
+                    <td class="nowrap">${formattedAadhar}</td>
+                    <td class="nowrap">₹${customer.principal.toFixed(2)}</td>
+                    <td>${customer.rate}%</td>
+                    <td class="nowrap">₹${monthlyInterest.toFixed(2)}</td>
+                    <td class="nowrap">${formatDate(new Date(customer.startDate))}</td>
+                    <td class="nowrap">₹${totalPaid.toFixed(2)}</td>
+                    <td class="nowrap balance">₹${totalBalance.toFixed(2)}</td>
+                    <td class="nowrap">${lastPayment}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button onclick="viewPaymentHistory('${customer.id}', '${customer.name}', '${customer.image || ''}')">பணம் பார்க்க</button>
+                            <button onclick="printCustomerDetails('${customer.id}')" class="print-btn">அச்சிடு</button>
+                            <button onclick="showDeleteModal('${customer.id}', '${customer.name}')" class="delete-btn">நீக்கு</button>
+                        </div>
+                    </td>
+                `;
+                customerTableBody.appendChild(row);
+            });
+        }
+        
+        function updateSummary() {
+            document.getElementById('totalCustomers').textContent = customers.length;
+            
+            const totalPrincipal = customers.reduce((sum, c) => sum + c.principal, 0);
+            document.getElementById('totalPrincipal').textContent = totalPrincipal.toFixed(2);
+            
+            const totalInterest = payments.reduce((sum, p) => sum + p.paidAmount, 0);
+            document.getElementById('totalInterest').textContent = totalInterest.toFixed(2);
+            
+            const totalBalance = payments.reduce((sum, p) => sum + p.balance, 0);
+            document.getElementById('totalBalance').textContent = totalBalance.toFixed(2);
+        }
+        
+        function viewPaymentHistory(customerId, customerName, customerImage) {
+            const modal = document.getElementById('paymentHistoryModal');
+            const customerPayments = payments.filter(p => p.customerId === customerId)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            document.getElementById('modalCustomerName').textContent = `${customerName} - பணம் செலுத்திய விவரம்`;
+            
+            const imageContainer = document.getElementById('modalCustomerImageContainer');
+            imageContainer.innerHTML = customerImage 
+                ? `<img src="${customerImage}" class="customer-image" alt="${customerName}">`
+                : '';
+            
+            const paymentHistoryBody = document.getElementById('paymentHistoryBody');
+            paymentHistoryBody.innerHTML = '';
+            
+            if (customerPayments.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="5" style="text-align:center;">பணம் செலுத்தியது எதுவும் இல்லை</td>';
+                paymentHistoryBody.appendChild(row);
+            } else {
+                customerPayments.forEach(payment => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="nowrap">${formatDate(new Date(payment.date))}</td>
+                        <td class="nowrap">₹${payment.dueAmount.toFixed(2)}</td>
+                        <td class="nowrap">₹${payment.paidAmount.toFixed(2)}</td>
+                        <td class="nowrap balance">₹${payment.balance.toFixed(2)}</td>
+                        <td>${payment.notes || '-'}</td>
+                    `;
+                    paymentHistoryBody.appendChild(row);
+                });
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        function showDeleteModal(customerId, customerName) {
+            customerToDelete = customerId;
+            document.getElementById('deleteCustomerText').textContent = 
+                `நீங்கள் "${customerName}" வாடிக்கையாளரை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?`;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+        
+        function confirmDelete() {
+            if (customerToDelete) {
+                customers = customers.filter(c => c.id !== customerToDelete);
+                payments = payments.filter(p => p.customerId !== customerToDelete);
+                saveData();
+                
+                renderCustomerSelect();
+                renderCustomerTable();
+                updateSummary();
+                
+                showMessage('formMessage', 'வாடிக்கையாளர் வெற்றிகரமாக நீக்கப்பட்டார்!', 'success');
+            }
+            closeModal();
+            customerToDelete = null;
+        }
+        
+        function cancelDelete() {
+            closeModal();
+            customerToDelete = null;
+        }
+        
+        function closeModal() {
+            document.getElementById('paymentHistoryModal').style.display = 'none';
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+        
+        function searchCustomers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) return;
+            
+            const filtered = customers.filter(c => 
+                c.name.toLowerCase().includes(searchTerm) || 
+                (c.phone && c.phone.includes(searchTerm)) ||
+                (c.aadhar && c.aadhar.includes(searchTerm)));
+            
+            renderCustomerTable(filtered);
+        }
+        
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            renderCustomerTable();
+        }
+        
+        function showMessage(elementId, text, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.className = 'message ' + type;
+            element.style.display = 'block';
+            setTimeout(() => element.style.display = 'none', 3000);
+        }
+        
+        function saveData() {
+            localStorage.setItem('interestBusinessCustomers', JSON.stringify(customers));
+            localStorage.setItem('interestBusinessPayments', JSON.stringify(payments));
+        }
+        
+    </script>
+</body>
+</html>
